@@ -1,0 +1,36 @@
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+
+const snapshotsFile = path.join(__dirname, '..', 'data', 'snapshots.json');
+
+async function fetchAndStoreSnapshot(username) {
+  try {
+    const res = await axios.get(`https://api.wiseoldman.net/v2/players/${encodeURIComponent(username)}`);
+    const player = res.data;
+    const snapshot = player.latestSnapshot.data;
+
+    // Prepare snapshot entry
+    const entry = {
+      username,
+      timestamp: new Date().toISOString(),
+      overallXP: snapshot.overall.experience,
+      skills: snapshot,
+    };
+
+    // Load existing snapshots or create empty
+    let snapshots = [];
+    if (fs.existsSync(snapshotsFile)) {
+      snapshots = JSON.parse(fs.readFileSync(snapshotsFile));
+    }
+
+    // Add new snapshot and save
+    snapshots.push(entry);
+    fs.writeFileSync(snapshotsFile, JSON.stringify(snapshots, null, 2));
+
+    return entry;
+  } catch (error) {
+    console.error('Error fetching snapshot:', error);
+    throw error;
+  }
+}

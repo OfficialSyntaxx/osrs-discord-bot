@@ -1,0 +1,11 @@
+{
+    "fletching": {
+      "broad arrows": { "xp_per_action": 10.5, "xp_per_hour": 100000 },
+      "yew longbow (u)": { "xp_per_action": 75, "xp_per_hour": 160000 }
+    },
+    "cooking": {
+      "trout": { "xp_per_action": 90, "xp_per_hour": 120000 },
+      "lobster": { "xp_per_action": 210, "xp_per_hour": 150000 }
+    }
+  }
+  
